@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  workout:
+    build: .
+    depends_on:
+      - mongo
+      - redis
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: 8000
+      DB_LOCAL_URI: "mongodb://mongo:27017/mydb"
+      REDIS_URI: "redis://redis:6379"
+  mongo:
+    image: mongo:4.2.23-rc1
+    volumes:
+      - user_mongo_volume:/data/db
+    
+  redis:
+    image: redis:7.0.5
+  
+networks:
+  default:
+    name: workout-net
+
+volumes:
+  user_mongo_volume:
